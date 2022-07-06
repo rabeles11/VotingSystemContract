@@ -1,4 +1,4 @@
-import { PersistentUnorderedMap,context,PersistentVector} from "near-sdk-as";
+import { PersistentUnorderedMap,context} from "near-sdk-as";
 import { Party } from './model';
 
 const voters = new PersistentUnorderedMap<string,string>("VOTERS");
@@ -18,7 +18,7 @@ export function GetAllParties(): Party[] | null{
 }
 
 
-export function SetContextSender(): void{
+function SetContextSender(): void{
     voters.set(context.sender,"ANO");
 }
 
@@ -37,7 +37,7 @@ export function VotePositive(party: Party): void{
     }
     PartyToVote.votePositive();
     Parties.set(PartyToVote.id, PartyToVote);
-    voters.set(context.sender,"Voted");
+    SetContextSender()
 }
 
 export function voteNegative(party: Party): void{
@@ -51,5 +51,5 @@ export function voteNegative(party: Party): void{
     }
     PartyToVote.voteNegative();
     Parties.set(PartyToVote.id, PartyToVote);
-    voters.set(context.sender,"Voted");
+    SetContextSender();
 }
